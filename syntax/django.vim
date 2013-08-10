@@ -21,7 +21,7 @@ syn match djangoError "%}\|}}\|#}"
 syn keyword djangoStatement contained autoescape csrf_token empty
 " FIXME ==, !=, <, >, <=, and >= should be djangoStatements:
 " syn keyword djangoStatement contained == != < > <= >=
-syn keyword djangoStatement contained and as block endblock by cycle debug else elif
+syn keyword djangoStatement contained and as block end endblock by cycle debug else elif
 syn keyword djangoStatement contained extends filter endfilter firstof for
 syn keyword djangoStatement contained endfor if endif ifchanged endifchanged
 syn keyword djangoStatement contained ifequal endifequal ifnotequal
@@ -60,8 +60,8 @@ syn match djangoTagError contained "#}\|{{\|[^%]}}\|[&#]"
 syn match djangoVarError contained "#}\|{%\|%}\|[<>!&#%]"
 
 " Django template tag and variable blocks
-syn region djangoTagBlock start="{%" end="%}" contains=djangoStatement,djangoFilter,djangoArgument,djangoTagError display
-syn region djangoVarBlock start="{{" end="}}" contains=djangoFilter,djangoArgument,djangoVarError display
+syn region djangoTagBlock matchgroup=djangoTagBrackets start="{%" end="%}" contains=djangoStatement,djangoFilter,djangoArgument,djangoTagError containedin=htmlHead,htmlTag,htmlString
+syn region djangoVarBlock matchgroup=djangoVarBrackets start="{{" end="}}" contains=djangoFilter,djangoArgument,djangoVarError containedin=htmlHead,htmlTag,htmlString
 
 " Django template 'comment' tag and comment block
 syn region djangoComment start="{%\s*comment\s*%}" end="{%\s*endcomment\s*%}" contains=djangoTodo
@@ -79,7 +79,9 @@ if version >= 508 || !exists("did_django_syn_inits")
   endif
 
   HiLink djangoTagBlock PreProc
+  HiLink djangoTagBrackets PreProc
   HiLink djangoVarBlock PreProc
+  HiLink djangoVarBrackets PreProc
   HiLink djangoStatement Statement
   HiLink djangoFilter Identifier
   HiLink djangoArgument Constant
