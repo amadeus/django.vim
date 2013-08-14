@@ -60,8 +60,8 @@ syn match djangoTagError contained "#}\|{{\|[^%]}}\|[&#]"
 syn match djangoVarError contained "#}\|{%\|%}\|[<>!&#%]"
 
 " Django template tag and variable blocks
-syn region djangoTagBlock matchgroup=djangoTagBrackets start="{%" end="%}" contains=djangoStatement,djangoFilter,djangoArgument,djangoTagError containedin=htmlHead,htmlTag,htmlString
-syn region djangoVarBlock matchgroup=djangoVarBrackets start="{{" end="}}" contains=djangoFilter,djangoArgument,djangoVarError containedin=htmlHead,htmlTag,htmlString
+syn region djangoTagBlock matchgroup=djangoTagBrackets start="{%" end="%}" contains=djangoStatement,djangoFilter,djangoArgument,djangoTagError containedin=htmlHead,htmlTag,htmlString,htmlLink
+syn region djangoVarBlock matchgroup=djangoVarBrackets start="{{" end="}}" contains=djangoFilter,djangoArgument,djangoVarError containedin=htmlHead,htmlTag,htmlString,htmlLink
 
 " Django template 'comment' tag and comment block
 syn region djangoComment start="{%\s*comment\s*%}" end="{%\s*endcomment\s*%}" contains=djangoTodo
