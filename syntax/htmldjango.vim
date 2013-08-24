@@ -15,26 +15,12 @@ if !exists("main_syntax")
   let main_syntax = 'html'
 endif
 
-if version < 600
-  so <sfile>:p:h/django.vim
-  so <sfile>:p:h/html.vim
-else
-  runtime! syntax/django.vim
-  runtime! syntax/html.vim
-  unlet b:current_syntax
-endif
+runtime! syntax/django.vim
+unlet b:current_syntax
+runtime! syntax/html.vim
+unlet b:current_syntax
 
-" The django plugin loads the necessary syntax for htmldjango.
-" This simply prevents the runtime htmldjango.vim file from
-" clobbering the syntax
-
-" Adding support for strings within Django templates
-syntax region  djangoStringD start=+"+ skip=+\\\\\|\\$"+  end=+"+ contained containedin=djangoTagBlock,djangoVarBlock keepend
-syntax region  djangoStringS start=+'+ skip=+\\\\\|\\$'+  end=+'+ contained containedin=djangoTagBlock,djangoVarBlock keepend
-
-command -nargs=+ HiLink hi def link <args>
-HiLink djangoStringD String
-HiLink djangoStringS String
-delcommand HiLink
+" Django regions must be sourced AFTER html
+runtime! syntax/djangoregions.vim
 
 let b:current_syntax = "htmldjango"

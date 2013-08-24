@@ -13,9 +13,6 @@ endif
 
 syntax case match
 
-" Mark illegal characters
-syn match djangoError "%}\|}}\|#}"
-
 " Django template built-in tags and parameters
 " 'comment' doesn't appear here because it gets special treatment
 syn keyword djangoStatement contained autoescape csrf_token empty
@@ -52,47 +49,16 @@ syn keyword djangoFilter contained urlize urlizetrunc wordcount wordwrap yesno
 " Keywords to highlight within comments
 syn keyword djangoTodo contained TODO FIXME XXX
 
-" Django template constants (always surrounded by double quotes)
-syn region djangoArgument contained start=/"/ skip=/\\"/ end=/"/
-
-" Mark illegal characters within tag and variables blocks
-syn match djangoTagError contained "#}\|{{\|[^%]}}\|[&#]"
-syn match djangoVarError contained "#}\|{%\|%}\|[<>!&#%]"
-
-" Django template tag and variable blocks
-syn region djangoTagBlock matchgroup=djangoTagBrackets start="{%" end="%}" contains=djangoStatement,djangoFilter,djangoArgument,djangoTagError containedin=htmlHead,htmlTag,htmlString,htmlLink
-syn region djangoVarBlock matchgroup=djangoVarBrackets start="{{" end="}}" contains=djangoFilter,djangoArgument,djangoVarError containedin=htmlHead,htmlTag,htmlString,htmlLink
-
-" Django template 'comment' tag and comment block
-syn region djangoComment start="{%\s*comment\s*%}" end="{%\s*endcomment\s*%}" contains=djangoTodo
-syn region djangoComBlock start="{#" end="#}" contains=djangoTodo
+" If in an html file, regions will be sourced after html.vim
+if !exists("main_syntax")
+  runtime! syntax/djangoregions.vim
+endif
 
 " Define the default highlighting.
-" For version 5.7 and earlier: only when not done already
-" For version 5.8 and later: only when an item doesn't have highlighting yet
-if version >= 508 || !exists("did_django_syn_inits")
-  if version < 508
-    let did_django_syn_inits = 1
-    command -nargs=+ HiLink hi link <args>
-  else
-    command -nargs=+ HiLink hi def link <args>
-  endif
-
-  HiLink djangoTagBlock PreProc
-  HiLink djangoTagBrackets PreProc
-  HiLink djangoVarBlock PreProc
-  HiLink djangoVarBrackets PreProc
-  HiLink djangoStatement Statement
-  HiLink djangoFilter Identifier
-  HiLink djangoArgument Constant
-  HiLink djangoTagError Error
-  HiLink djangoVarError Error
-  HiLink djangoError Error
-  HiLink djangoComment Comment
-  HiLink djangoComBlock Comment
-  HiLink djangoTodo Todo
-
-  delcommand HiLink
-endif
+command -nargs=+ HiLink hi def link <args>
+HiLink djangoStatement Statement
+HiLink djangoFilter Identifier
+HiLink djangoTodo Todo
+delcommand HiLink
 
 let b:current_syntax = "django"
